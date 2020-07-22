@@ -1,0 +1,175 @@
+OWASP TOP 10 TRY HACK ME DAY 1 (Injection)
+
+Injection:
+
+There are two types of injections for web apps:
+
+SQL Injection: This occurs when user controlled input is passed to SQL queries. As a result, an attacker can pass in SQL queries to manipulate the outcome of such queries.
+example of SQL injections: ' or 1=1 -- -  the system interprets SELECT * FROM users WHERE username = admin AND password := ' or 1=1 -- -    (admin would be the username)
+
+ 
+Command Injection: This occurs when user input is passed to system commands. As a result, an attacker is able to execute arbitrary system commands on application servers.
+
+If attacker susccsefully inject a command he can:
+
+Access, Modify and Delete information in a database when this input is passed into database queries.
+This would mean that an attacker can steal sensitive information such as personal details and credentials.
+
+Execute Arbitrary system commands on a server that would allow an attacker to gain access to users’ systems. This would enable them to steal
+sensitive data and carry out more attacks against infrastructure linked to the server on which the command is executed.
+
+Solutions: 
+
+1. ls -->  cat drpepper.txt
+2. cat /etc/passwd 
+3. whoami
+4. cat /etc/passwd 
+5. lsb_release -a   (url where I have found the command: https://askubuntu.com/questions/686239/how-do-i-check-the-version-of-ubuntu-i-am-running)
+6. find / -name "00-header" --> cat /snap/core/9066/etc/update-motd.d/00-header 
+
+OWASP TOP 10 TRY HACK ME DAY 2 (Broken Authentication)
+
+If an attacker is able to find flaws in an authentication mechanism, they would then successfully gain access to other users’ accounts. This would allow the attacker to access sensitive data (depending on the purpose of the application). Some common flaws in authentication mechanisms include:
+
+Brute force attacks: If a web application uses usernames and passwords, an attacker is able to launch brute force attacks that allow them to guess the username and passwords using multiple authentication attempts. 
+Use of weak credentials: web applications should set strong password policies. If applications allow users to set passwords such as ‘password1’ or common passwords, then an attacker is able to easily guess them and access user accounts. They can do this without brute forcing and without multiple attempts.
+Weak Session Cookies: Session cookies are how the server keeps track of users. If session cookies contain predictable values, an attacker can set their own session cookies and access users’ accounts. 
+There can be various mitigation for broken authentication mechanisms depending on the exact flaw:
+
+To avoid password guessing attacks, ensure the application enforces a strong password policy. 
+To avoid brute force attacks, ensure that the application enforces an automatic lockout after a certain number of attempts. This would prevent an attacker from launching more brute force attacks.
+Implement Multi Factor Authentication - If a user has multiple methods of authentication, for example, using username and passwords and receiving a code on their mobile device, then it would be difficult for an attacker to get access to both credentials to get access to their account.
+
+Exploit:
+If username alradly exist and the website is not filtered, you can get acces to other user account by putting a space in front of the name for example "kayde" " kayde" 
+this will make the database understand that you are "kayde" even though you aren't !!!
+
+
+OWASP 10 TRY HACK ME DAY 3 (Sensitive Data Exposure)
+
+This is often data directly linked to customers (e.g. names, dates-of-birth, financial information, etc),
+but could also be more technical information, such as usernames and passwords.
+At more complex levels this often involves techniques such as a "Man in The Middle Attack",
+whereby the attacker would force user connections through a device which they control, then take advantage of weak encryption on any transmitted data to gain
+access to the intercepted information (if the data is even encrypted in the first place...). Of course, many examples are much simpler,
+and vulnerabilities can be found in web apps which can be exploited without any advanced networking knowledge.
+
+In a production environment it is common to see databases set up on dedicated servers, running a database service such as MySQL or MariaDB;
+however, databases can also be stored as files. These databases are referred to as "flat-file" databases.
+
+As mentioned previously, flat-file databases are stored as a file on the disk of a computer.
+Usually this would not be a problem for a webapp, but what happens if the database is stored underneath the root directory of the website
+
+Solutions:
+
+1. Inspect the login page and look for a comment that the developers have done --> they mention something about the /assets file
+2. Visit the asset page <machine-ip>/assets 
+3. Dowload file use sqlite3 webapp.db --> .tables --> PRAGMA table_info(users); --> SELECT * FROM users; --> compare the pragma output with the select * output
+4. Crack the hash https://crackstation.net/
+5. use the credentials that you have gotten login: admin password: qwertyuiop
+
+OWASP 10 TRY HACK ME DAY 4 (XXE)
+
+An XML External Entity (XXE) attack is a vulnerability that abuses features of XML parsers/data.
+It often allows an attacker to interact with any backend or external systems that the application
+itself can access and can allow the attacker to read the file on that system.
+They can also cause Denial of Service (DoS) attack or could use XXE to perform Server-Side Request Forgery (SSRF) inducing the web application
+to make requests to other applications. XXE may even enable port scanning and lead to remote code execution.
+
+There are two types of XXE attacks: in-band and out-of-band (OOB-XXE).
+1) An in-band XXE attack is the one in which the attacker can receive an immediate response to the XXE payload.
+
+2) out-of-band XXE attacks (also called blind XXE), there is no immediate response from the web application and
+ attacker has to reflect the output of their XXE payload to some other file or their own server.
+ 
+OWASP 10 TRY HACK ME DAY 5 (Broken Access Control)
+
+Broken access control allows attackers to bypass authorization which can allow them to view sensitive data or perform tasks as if they were a privileged user.
+
+IDOR, or Insecure Direct Object Reference, is the act of exploiting a misconfiguration in the way user input is handled, to access resources you wouldn't
+ordinarily be able to access. IDOR is a type of access control vulnerability.
+
+For example, let's say we're logging into our bank account, and after correctly authenticating ourselves, we get taken to a URL like this
+https://example.com/bank?account_number=1234
+
+Now the hacker can see that by changeing the last few number of the url for example 1235 it shows a file from another person
+
+Solutions:
+
+1. http://<machine-ip/note.php?note=0
+
+OWASP 10 TRY HACK ME DAY 6 (Security Misconfiguration)
+
+Security misconfigurations include:
+
+-Poorly configured permissions on cloud services, like S3 buckets
+-Having unnecessary features enabled, like services, pages, accounts or privileges
+-Default accounts with unchanged passwords
+-Error messages that are overly detailed and allow an attacker to find out more about the system
+-Not using HTTP security headers, or revealing too much detail in the Server: HTTP header
+
+Sulutions:
+
+1.Basic osint to find website https://github.com/NinjaJc01/PensiveNotes
+
+OWASP 10 HACK THE BOX DAY 7 (XSS)
+
+A web application is vulnerable to XSS if it uses unsanitized user input. XSS is possible in Javascript, VBScript, Flash and CSS. There are three main types of cross-site scripting:
+1.Stored XSS - the most dangerous type of XSS. This is where a malicious string originates from the website’s database. This often happens when a website allows user input that is not sanitised (remove the "bad parts" of a users input) when inserted into the database.
+2.Reflected XSS - the malicious payload is part of the victims request to the website. The website includes this payload in response back to the user. To summarise, an attacker needs to trick a victim into clicking a URL to execute their malicious payload.
+3.DOM-Based XSS - DOM stands for Document Object Model and is a programming interface for HTML and XML documents.
+It represents the page so that programs can change the document structure, style and content. A web page is a document and this document can be either displayed in the browser window or as the HTML source.
+
+
+Solutions:
+
+1. Start VM
+2. To do this one go to the machine website then go to the Reflected XSS section then get the url and decode it here https://www.urlencoder.org/
+now you will get a output like http://<machine-ip>/reflected?keyword=    after the equals looks like that is vulnerable to xss because it is accepting a input
+now get the script <script>alert(“Hello World”)</script> and encode it %3Cscript%3Ealert%28%E2%80%9CHello%20World%E2%80%9D%29%3C%2Fscript%3E  we do this
+so then the url can be accepted because if we use slashes braches or equals signs the uwl won't interpret it as a code instead as a "name" or simply a word
+the final output will be http://<machine-ip>/reflected?keyword=%3Cscript%3Ealert%28%E2%80%9CHello%20World%E2%80%9D%29%3C%2Fscript%3E
+3. for the third one it is asking to display the machine ip encode this and add to the end of the url <script>alert(window.location.hostname)</script>
+4.  add a comment using any HTML code example <h1>OH HELLO THERE</h1>
+5.  add a comment saying <script>alert(document.cookie)</script>
+6.  add a comment saying <script>document.querySelector('#thm-title').textContent = 'I am a hacker'</script>
+
+
+OWASP 10 TRY HACK ME DAY 8 (Insecure Deserialization)
+
+This definition is still quite broad to say the least. Simply, insecure deserialization is replacing data processed by an application with malicious code;
+allowing anything from DoS (Denial of Service) to RCE (Remote Code Execution) that the attacker can use to gain a foothold in a pentesting scenario.
+
+1. The Apache Software Foundation
+2. denial of service
+3. a behaviour
+4. binary
+5. webapp.com/login
+6. https
+7. get the sasseion id value and decode that using a base64 decoder: THM{good_old_base64_huh} 
+8. THM{heres_the_admin_flag}
+9. to get the <machine-ip>/myprofile page (don't forget to change the admin cookie value to admin), then click on the vim link and a new cookie will be generated, then go to the feedback page and then
+create a netcat listener on any port that you prefer like 1234 (nc -lvnp 1234) then create a new cookie value by using the python program provided here https://gist.github.com/CMNatic/af5c19a8d77b4f5d8171340b9c560fc3
+(dont forget to use your vpn ip) then paste the output of the code and paste on the encodedpayload value now reload the page and you should get a shell from your netcat listener, now do cd .. and then ls on the shell 
+and your flag will be thre waiting for you.
+
+OWASP 10 TRY HACK ME DAY 9 (Components With Known Vulnerabilities)
+
+
+Solution:
+
+1.To get the answer you will have to search for a exploitation that already exist on the exploit db website.
+The url for the exploitation is here: https://www.exploit-db.com/exploits/47887 you could find this by searhing for "book" on the search bar because our store was related to books :v
+to use it run the code provided as py and insert the url in the end like python explo.py http://<machine-ip>/  , now you should have got a output like Example command usage: http://<machine-ip>/bootstrap/img/GkiLvKGrhI.php?cmd=whoami
+go to this url and instead of whoami type  wc -c /etc/passwd and now you should have the answer that is 1611 /etc/passwd 
+
+
+OWASP 10 TRY HACK ME DAY 10 (Insufficient Logging and Monitoring)
+
+Without logging, there would be no way to tell what actions an attacker performed if they gain access to particular web applications.
+
+Solutions:
+
+1. 49.99.13.16 (read the log provided)
+2. Brute Force
+
