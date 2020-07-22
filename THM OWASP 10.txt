@@ -96,7 +96,7 @@ Now the hacker can see that by changeing the last few number of the url for exam
 
 Solutions:
 
-1. http://<machine-ip/note.php?note=0
+1. http://<machine-ip>/note.php?note=0
 
 OWASP 10 TRY HACK ME DAY 6 (Security Misconfiguration)
 
@@ -108,7 +108,7 @@ Security misconfigurations include:
 -Error messages that are overly detailed and allow an attacker to find out more about the system
 -Not using HTTP security headers, or revealing too much detail in the Server: HTTP header
 
-Sulutions:
+Solutions:
 
 1.Basic osint to find website https://github.com/NinjaJc01/PensiveNotes
 
@@ -172,4 +172,7 @@ Solutions:
 
 1. 49.99.13.16 (read the log provided)
 2. Brute Force
+
+Please comment any error if you find any, thank yoou :)
+by IndiaFoxtrot 
 
